@@ -6,7 +6,7 @@ import csv
 import time
 import random
 
-def getIndexHtml():
+def getIndexHtml(req):
     # 打开csv
     csvFile = open("instance.csv", "w")
     try:
@@ -65,19 +65,6 @@ def showDetail(url):
         for tr in trs:
             index = 0
             tds = tr.find_all("td")
-            # for td in tds:
-            #     index += 1
-            #     if index % 4 == 0:
-            #         try:
-            #             wFile = open(textName, "a")
-            #             # print("写入文件开始")
-            #             writer = csv.writer(wFile)
-            #             writer.writerow([tds[0].text, tds[1].text, tds[2].text, tds[3].text])
-            #             # print("写入文件结束")
-            #         except:
-            #             print("写入文件过程中出现异常")
-            #         finally:
-            #             wFile.close()
             while index < len(tds):
                 try:
                     wFile = open(textName, "a")
@@ -95,10 +82,13 @@ def showDetail(url):
 
 if __name__ == '__main__':
     # 写入文件
-    # url = "http://fund.eastmoney.com/allfund.html"
-    # req = requests.get(url)
-    # req.encoding = 'gbk'
-    # getIndexHtml()
+    url = "http://fund.eastmoney.com/allfund.html"
+    headers = {"User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) App leWebKit/537.51.2 (KHTML, like Gecko)"
+                            " Version/7.0 Mobile/11D257 Safari/9537.53"}
+
+    req = requests.get(url, headers = headers)
+    req.encoding = 'gbk'
+    getIndexHtml(req)
 
     # 读取文件
     str = readFromCsv()
@@ -106,12 +96,6 @@ if __name__ == '__main__':
     for i, j in enumerate(str):
         if i % 2 == 0 and i < num:
             time.sleep(random.randint(3, 5))
-            # print(j, str[i + 1])
-            # print(str[i], str[i + 1])
             showDetail(str[i + 1])
 
-    # i = 0
-    # while i < len(str):
-    #     print(str[i], str[i])
-    #     i += 2
 
